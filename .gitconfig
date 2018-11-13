@@ -10,4 +10,3 @@
 	editor = vim
 	filemode = false
 	trustctime = false
-	autocrlf = true
