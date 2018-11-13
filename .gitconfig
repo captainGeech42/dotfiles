@@ -1,0 +1,13 @@
+[user]
+	name = Zander Work
+	email = zander@zanderwork.com
+
+[github]
+	user = zzzanderw
+
+[core]
+	excludesfile = ~/.gitignore
+	editor = vim
+	filemode = false
+	trustctime = false
+	autocrlf = true

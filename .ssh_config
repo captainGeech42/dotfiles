@@ -1,0 +1,23 @@
+Host ctf1
+	HostName vm-ctf1.eecs.oregonstate.edu
+	User dankhax0r
+	Port 22
+	IdentityFile ~/.ssh/id_ecdsa
+
+Host jump
+	HostName jump.zanderwork.com
+	User zander
+	Port 31337
+	IdentityFile ~/.ssh/id_rsa
+
+Host flip
+	HostName flip.engr.oregonstate.edu
+	User neadwora
+	Port 22
+	IdentityFile ~/.ssh/id_rsa
+
+Host mt
+	HostName s28305.gridserver.com
+	User serveradmin%indiependencemusic.net
+	Port 22
+	IdentityFile ~/.ssh/id_ecdsa
