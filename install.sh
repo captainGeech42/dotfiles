@@ -11,6 +11,15 @@ else
 	echo "[~] oh-my-zsh already installed, skipping..."
 fi
 
+# Install gdb-peda
+if [ ! -d "$HOME/.peda" ]; then
+	echo "[~] gdb-peda not installed, installing..."
+
+	git clone https://github.com/longld/peda.git ~/.peda
+else
+	ehoc "[~] gdb-peda already installed, skipping..."
+fi
+
 # Get dotfiles installation directory
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -24,3 +33,4 @@ ln -sf "$DOTFILES_DIR/.exports" ~
 ln -sf "$DOTFILES_DIR/.aliases" ~
 ln -sf "$DOTFILES_DIR/.tmux.conf" ~
 ln -sf "$DOTFILES_DIR/.ssh_config" ~/.ssh/config
+ln -sf "$DOTFILES_DIR/.gdbinit" ~
