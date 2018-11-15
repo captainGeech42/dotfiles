@@ -17,7 +17,7 @@ if [ ! -d "$HOME/.peda" ]; then
 
 	git clone https://github.com/longld/peda.git ~/.peda
 else
-	ehoc "[~] gdb-peda already installed, skipping..."
+	echo "[~] gdb-peda already installed, skipping..."
 fi
 
 # Get dotfiles installation directory
