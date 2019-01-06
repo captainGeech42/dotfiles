@@ -6,7 +6,7 @@
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	echo "[~] oh-my-zsh not installed, installing..."
 	
-	#sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 else
 	echo "[~] oh-my-zsh already installed, skipping..."
 fi
