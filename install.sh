@@ -2,6 +2,9 @@
 
 # https://blog.ssdnodes.com/blog/tutorial-lets-make-development-lives-better-dotfiles/
 
+# Install pre-reqs (only works on debian-based)
+sudo apt install -y powerline zsh tmux curl
+
 # Install oh-my-zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	echo "[~] oh-my-zsh not installed, installing..."
@@ -32,5 +35,6 @@ ln -sf "$DOTFILES_DIR/.zshrc" ~
 ln -sf "$DOTFILES_DIR/.exports" ~
 ln -sf "$DOTFILES_DIR/.aliases" ~
 ln -sf "$DOTFILES_DIR/.tmux.conf" ~
+mkdir -p ~/.ssh 2>/dev/null
 ln -sf "$DOTFILES_DIR/.ssh_config" ~/.ssh/config
 ln -sf "$DOTFILES_DIR/.gdbinit" ~
