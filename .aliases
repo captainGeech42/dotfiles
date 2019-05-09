@@ -27,3 +27,6 @@ alias ips="ip addr | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]
 
 # GDB
 alias gdb="gdb -q"
+
+# pip
+alias pip2="python -m pip"
