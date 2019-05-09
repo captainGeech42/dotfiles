@@ -7,9 +7,13 @@ sudo apt install -y powerline zsh tmux curl
 
 # Install oh-my-zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-	echo "[~] oh-my-zsh not installed, installing..."
-	
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+	if [ ! -f "/usr/bin/zsh" ]; then
+		echo "[~] zsh not installed, skipping oh-my-zsh"
+	else
+		echo "[~] oh-my-zsh not installed, installing..."
+		
+		sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+	fi
 else
 	echo "[~] oh-my-zsh already installed, skipping..."
 fi
@@ -38,3 +42,4 @@ ln -sf "$DOTFILES_DIR/.tmux.conf" ~
 mkdir -p ~/.ssh 2>/dev/null
 ln -sf "$DOTFILES_DIR/.ssh_config" ~/.ssh/config
 ln -sf "$DOTFILES_DIR/.gdbinit" ~
+ln -sf "$DOTFILES_DIR/.vimrc" ~
