@@ -1,6 +1,7 @@
 [user]
 	name = Zander Work
 	email = zander@zanderwork.com
+	signingkey = 62C2ADB773488EBC # ADD THE RIGHT KEY HERE
 
 [github]
 	user = zzzanderw
@@ -10,3 +11,6 @@
 	editor = vim
 	filemode = false
 	trustctime = false
+
+[commit]
+	gpgsign = true
