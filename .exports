@@ -17,3 +17,6 @@ export LANG="en_US"
 
 # Add python bin to path
 export PATH=$PATH:/home/zander/.local/bin
+
+# GPG
+export GPG_TTY=$(tty)

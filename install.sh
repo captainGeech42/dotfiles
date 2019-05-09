@@ -40,6 +40,6 @@ ln -sf "$DOTFILES_DIR/.exports" ~
 ln -sf "$DOTFILES_DIR/.aliases" ~
 ln -sf "$DOTFILES_DIR/.tmux.conf" ~
 mkdir -p ~/.ssh 2>/dev/null
-ln -sf "$DOTFILES_DIR/.ssh_config" ~/.ssh/config
+ln -sf "$DOTFILES_DIR/.ssh/config" ~/.ssh/config
 ln -sf "$DOTFILES_DIR/.gdbinit" ~
 ln -sf "$DOTFILES_DIR/.vimrc" ~
