@@ -1,45 +1,162 @@
 #!/bin/bash
 
-# https://blog.ssdnodes.com/blog/tutorial-lets-make-development-lives-better-dotfiles/
+trap "exit 1" TERM
+TOP_PID=$$
 
-# Install pre-reqs (only works on debian-based)
-sudo apt install -y powerline zsh tmux curl
+log() {
+	echo "[*] $1"
+}
 
-# Install oh-my-zsh
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-	if [ ! -f "/usr/bin/zsh" ]; then
-		echo "[~] zsh not installed, skipping oh-my-zsh"
+error() {
+	echo "[!] $1" >&2
+}
+
+prompt() {
+	read -n1 -p "[?] $1 (y/n)? " input
+	echo ""
+
+	if [[ $input == "y" ]]; then
+		return 0
+	elif [[ $input == "n" ]]; then
+		return 1
 	else
-		echo "[~] oh-my-zsh not installed, installing..."
-		
-		sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+		error "invalid input"
+		prompt "$1"
 	fi
-else
-	echo "[~] oh-my-zsh already installed, skipping..."
+}
+
+
+get_os() {
+	if [[ -z "$OSTYPE" ]]; then
+		error "couldn't detect OS type, exiting"
+		kill -s TERM $TOP_PID
+	fi
+
+	case $OSTYPE in
+		linux*)
+			local os="linux"
+			;;
+		darwin*)
+			local os="macos"
+			;;
+		*)
+			error "unsupported OS detected, exiting: $OSTYPE"
+			kill -s TERM $TOP_PID
+			;;
+	esac
+
+	echo $os
+}
+
+get_distro() {
+	if [[ ! -f "/etc/os-release" ]]; then
+		error "couldn't detect distro, exiting"
+		kill -s TERM $TOP_PID
+	fi
+
+	. /etc/os-release
+
+	case $ID in
+		"ubuntu") ;&
+		"debian")
+			local distro="debian"
+			;;
+		"centos") ;&
+		"fedora") ;&
+		"rhel")
+			local distro="rhel"
+			case $VERSION_ID in
+				"7") ;&
+				"8") ;;
+				*)
+					error "unsupported version of RHEL-based distro: $VERSION_ID"
+					kill -s TERM $TOP_PID
+					;;
+			esac
+			;;
+		"arch")
+			local distro="arch"
+			;;
+		*)
+			error "unsupported distro detected, exiting: $ID"
+			kill -s TERM $TOP_PID
+			;;
+	esac
+
+	echo $distro
+}
+
+os=$(get_os)
+
+log "detected OS: $os"
+
+if [[ $os == "linux" ]]; then
+	distro=$(get_distro)
+	log "detected distro: $distro"
+
+	. /etc/os-release
 fi
 
-# Install gdb-peda
-if [ ! -d "$HOME/.peda" ]; then
-	echo "[~] gdb-peda not installed, installing..."
+if [[ $os == "macos" ]]; then
+	# check if brew is installed
+	if [[ ! -f "/usr/local/bin/brew" ]]; then
+		log "couldn't find existing brew install"
 
-	git clone https://github.com/longld/peda.git ~/.peda
-else
-	echo "[~] gdb-peda already installed, skipping..."
+		prompt "would you like to install homebrew"
+		if [[ $? -eq 0 ]]; then
+			log "installing homebrew"
+
+			/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+			if [[ $? -ne 0 ]]; then
+				error "homebrew install failed, please fix and then rerun this script"
+				exit 1
+			fi
+		else
+			error "please install homebrew and rerun this script"
+			exit 1
+		fi
+	fi
 fi
 
-# Get dotfiles installation directory
-DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+log "installing packages"
 
-# Generate symlinks
-echo "[~] generating symlinks..."
+case $os in
+	"macos")
+		brew install -q tmux wget telnet jq gpg thefuck htop
+		;;
+	"linux")
+		case $distro in
+			"debian")
+				sudo apt-get update -qq
+				sudo apt-get install -qq -y --no-install-recommends tmux vim jq htop wget gpg zsh git
+				;;
+			"rhel")
+				if [[ "$VERSION_ID" == "7" ]]; then
+					sudo yum install -q -y epel-release
+					sudo yum install -q -y tmux vim jq htop wget gpg zsh git python36
+				elif [[ "$VERSION_ID" == "8" ]]; then
+					sudo dnf install -q -y epel-release
+					sudo dnf install -q -y tmux vim jq htop wget gpg zsh git python38
+				fi
+				;;
+			"arch")
+				if [[ ! -f "/usr/bin/trizen" ]]; then
+					prompt "trizen not found, would you like to install it"
 
-ln -sf "$DOTFILES_DIR/.gitconfig" ~
-ln -sf "$DOTFILES_DIR/.gitignore" ~
-ln -sf "$DOTFILES_DIR/.zshrc" ~
-ln -sf "$DOTFILES_DIR/.exports" ~
-ln -sf "$DOTFILES_DIR/.aliases" ~
-ln -sf "$DOTFILES_DIR/.tmux.conf" ~
-mkdir -p ~/.ssh 2>/dev/null
-ln -sf "$DOTFILES_DIR/.ssh/config" ~/.ssh/config
-ln -sf "$DOTFILES_DIR/.gdbinit" ~
-ln -sf "$DOTFILES_DIR/.vimrc" ~
+					if [[ $? -eq 0 ]]; then
+						pushd $(mktemp -d) 2>/dev/null
+						sudo pacman -Sqyu --noconfirm git
+						git clone https://aur.archlinux.org/trizen.git
+						cd trizen
+						sudo makepkg -si
+						popd 2>/dev/null
+					fi
+				fi
+
+				sudo pacman -Sqyu --noconfirm tmux vim jq htop wget gnupg zsh git python
+				;;
+		esac
+		;;
+esac
+
+
