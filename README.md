@@ -18,7 +18,7 @@ If you use it on macOS, make sure the Xcode Command Line Tools are installed fir
 For a zero-interaction install, run:
 
 ```
-$ DF_NOPROMPT=1 curl -L zanderwork.com/dotfiles | bash
+$ curl -L zanderwork.com/dotfiles | DF_NOPROMPT=1 bash
 ```
 
 (that URL redirects to the install script, if you don't want to `curl | bash` then download the `install.sh` script and run it)

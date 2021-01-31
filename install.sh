@@ -13,7 +13,7 @@ error() {
 
 prompt() {
 	if [[ ! -z "$DF_NOPROMPT" ]]; then
-		log "autoaccepting prompt: $!"
+		log "autoaccepting prompt: $1"
 		return 0
 	fi
 
