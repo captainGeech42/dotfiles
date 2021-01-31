@@ -12,7 +12,7 @@ error() {
 }
 
 prompt() {
-	read -n1 -p "[?] $1 (y/n)? " input
+	read -n1 -p "[?] $1 (y/n)? " input <&1
 	echo ""
 
 	if [[ $input == "y" ]]; then
@@ -144,12 +144,12 @@ case $os in
 					prompt "trizen not found, would you like to install it"
 
 					if [[ $? -eq 0 ]]; then
-						pushd $(mktemp -d) 2>/dev/null
+						pushd $(mktemp -d) 2>&1 >/dev/null
 						sudo pacman -Sqyu --noconfirm git
 						git clone https://aur.archlinux.org/trizen.git
 						cd trizen
 						sudo makepkg -si
-						popd 2>/dev/null
+						popd 2>&1 >/dev/null
 					fi
 				fi
 
