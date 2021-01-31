@@ -12,10 +12,10 @@ error() {
 }
 
 prompt() {
-	read -n1 -p "[?] $1 (y/n)? " input <&1
+	read -n1 -p "[?] $1 (Y/n)? " input <&1
 	echo ""
 
-	if [[ $input == "y" ]]; then
+	if [[ $input == "y" || $input == "" ]]; then
 		return 0
 	elif [[ $input == "n" ]]; then
 		return 1
@@ -145,10 +145,10 @@ case $os in
 
 					if [[ $? -eq 0 ]]; then
 						pushd $(mktemp -d) 2>&1 >/dev/null
-						sudo pacman -Sqyu --noconfirm git
+						sudo pacman -Sqyu --noconfirm git base-devel
 						git clone https://aur.archlinux.org/trizen.git
 						cd trizen
-						sudo makepkg -si
+						makepkg -si
 						popd 2>&1 >/dev/null
 					fi
 				fi
