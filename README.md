@@ -16,7 +16,7 @@ If you use it on macOS, make sure the Xcode Command Line Tools are installed fir
 ## Install
 
 ```
-$ curl -L https://zanderwork.com/dotfiles | bash
+$ curl -L zanderwork.com/dotfiles | bash
 ```
 
 (that URL 302s to the install script, if you don't want to `curl | bash` then download the `install.sh` script and run it)

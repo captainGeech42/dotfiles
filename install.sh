@@ -148,7 +148,7 @@ case $os in
 						sudo pacman -Sqyu --noconfirm git base-devel
 						git clone https://aur.archlinux.org/trizen.git
 						cd trizen
-						makepkg -si --noconfirm
+						echo "y" | makepkg -si --noconfirm
 						popd 2>&1 >/dev/null
 					fi
 				fi
