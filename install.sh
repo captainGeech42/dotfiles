@@ -12,6 +12,11 @@ error() {
 }
 
 prompt() {
+	if [[ ! -z "$DF_NOPROMPT" ]]; then
+		log "autoaccepting prompt: $!"
+		return 0
+	fi
+
 	read -n1 -p "[?] $1 (Y/n)? " input <&1
 	echo ""
 

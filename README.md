@@ -15,8 +15,12 @@ If you use it on macOS, make sure the Xcode Command Line Tools are installed fir
 
 ## Install
 
+For a zero-interaction install, run:
+
 ```
-$ curl -L zanderwork.com/dotfiles | bash
+$ DF_NOPROMPT=1 curl -L zanderwork.com/dotfiles | bash
 ```
 
-(that URL 302s to the install script, if you don't want to `curl | bash` then download the `install.sh` script and run it)
+(that URL redirects to the install script, if you don't want to `curl | bash` then download the `install.sh` script and run it)
+
+If you don't set `$DF_NOPROMPT`, you will be asked to confirm whether or not certain actions should be taken (e.g. installing `trizen`, setting up a Python virtualenv).
